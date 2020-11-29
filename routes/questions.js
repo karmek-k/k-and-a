@@ -42,13 +42,14 @@ router.post(
       });
     }
 
+    // Check if we're asking a non-existent user
     try {
       const recipient = await User.findOne({
         username: requestDto.recipientUsername
       });
 
       if (!recipient) {
-        return res.status(400).json({ msg: 'The recipient does not exist' });
+        return res.status(404).json({ msg: 'The recipient does not exist' });
       }
     } catch (e) {
       reportError(e);
