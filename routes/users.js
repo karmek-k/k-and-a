@@ -54,7 +54,6 @@ router.post('/create', userValidators, async (req, res) => {
 
   // Send response
   return res.status(201).json({
-    id: user._id,
     username: user.username
   });
 });
@@ -92,7 +91,6 @@ router.post('/login', userLoginValidators, async (req, res) => {
 
   // everything is good, send the JWT
   const payload = {
-    id: user._id,
     username: user.username
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
