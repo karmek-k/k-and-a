@@ -30,6 +30,7 @@ app.get('/', (req, res) => {
 
 // Other routes
 app.use('/api/users', require('./routes/users'));
+app.use('/api/questions', require('./routes/questions'));
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
