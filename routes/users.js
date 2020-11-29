@@ -7,16 +7,9 @@ const User = require('../models/User');
 const userValidators = require('../validation/user');
 const userLoginValidators = require('../validation/userLogin');
 const reportError = require('../functions/reportError');
+const validate = require('./middleware/validate');
 
-router.post('/create', userValidators, async (req, res) => {
-  // Validate user data
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array()
-    });
-  }
-
+router.post('/create', userValidators, validate, async (req, res) => {
   // Check if the username is unique
   try {
     const userExists = await User.exists({
@@ -58,15 +51,7 @@ router.post('/create', userValidators, async (req, res) => {
   });
 });
 
-router.post('/login', userLoginValidators, async (req, res) => {
-  // Validate user data
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array()
-    });
-  }
-
+router.post('/login', userLoginValidators, validate, async (req, res) => {
   // Check if the user exists
   let user;
   try {
