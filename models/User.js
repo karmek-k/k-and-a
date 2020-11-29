@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
   dateJoined: {
     type: Date,
     default: Date.now
+  },
+  isBanned: {
+    type: Boolean,
+    default: false
   }
 });
 
