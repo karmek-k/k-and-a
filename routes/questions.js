@@ -5,7 +5,7 @@ const Question = require('../models/Question');
 
 router.get('/latest', async (req, res) => {
   try {
-    const questions = await Question.find().limit(5);
+    const questions = await Question.find().sort({ $natural: -1 }).limit(5);
     return res.json(questions);
   } catch (e) {
     reportError(e);
