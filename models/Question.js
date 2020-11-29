@@ -16,7 +16,7 @@ const QuestionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  receiverUsername: {
+  recipientUsername: {
     type: String,
     required: true
   },
