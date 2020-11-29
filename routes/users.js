@@ -1,10 +1,10 @@
 const router = require('express').Router();
 
-router.post('/create', (req, res) => {
+router.post('/create', async (req, res) => {
   res.send('User creation dummy route');
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   res.send('User login dummy route');
 });
 
