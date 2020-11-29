@@ -7,6 +7,7 @@ const User = require('../models/User');
 const userValidators = require('../validation/user');
 const userLoginValidators = require('../validation/userLogin');
 const reportError = require('../functions/reportError');
+const auth = require('./authMiddleware');
 
 router.post('/create', userValidators, async (req, res) => {
   // Validate user data

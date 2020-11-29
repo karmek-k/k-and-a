@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const passport = require('passport');
 require('dotenv').config();
 
 const app = express();
@@ -7,6 +8,8 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+require('./config/passport');
+app.use(passport.initialize());
 
 // Mongoose
 mongoose
