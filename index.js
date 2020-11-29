@@ -4,11 +4,18 @@ require('dotenv').config();
 
 const app = express();
 
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Mongoose
-mongoose.connect(process.env.MONGODB_CONNECT_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose
+  .connect(process.env.MONGODB_CONNECT_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('Connected to the database'))
+  .catch(err => console.error(err));
 
 // Welcome route
 app.get('/', (req, res) => {
