@@ -1,0 +1,33 @@
+{
+  "name": "k-and-a",
+  "version": "1.0.0",
+  "description": "K&A (Kuestion and Answer) - a Q&A website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karmek-k/k-and-a.git"
+  },
+  "keywords": [
+    "q&a",
+    "website",
+    "express",
+    "mongodb"
+  ],
+  "author": "Bartosz Gleń",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/karmek-k/k-and-a/issues"
+  },
+  "homepage": "https://github.com/karmek-k/k-and-a#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.10.18"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6",
+    "prettier": "^2.2.1"
+  }
+}
