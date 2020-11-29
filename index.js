@@ -1,6 +1,14 @@
 const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
+
+// Mongoose
+mongoose.connect(process.env.MONGODB_CONNECT_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 // Welcome route
 app.get('/', (req, res) => {
