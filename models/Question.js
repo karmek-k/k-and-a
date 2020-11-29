@@ -15,6 +15,14 @@ const QuestionSchema = new mongoose.Schema({
   posterUsername: {
     type: String,
     required: true
+  },
+  receiverUsername: {
+    type: String,
+    required: true
+  },
+  answered: {
+    type: Boolean,
+    default: false
   }
 });
 
