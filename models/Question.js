@@ -23,6 +23,10 @@ const QuestionSchema = new mongoose.Schema({
   answered: {
     type: Boolean,
     default: false
+  },
+  tags: {
+    type: [String],
+    default: []
   }
 });
 
