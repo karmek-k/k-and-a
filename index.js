@@ -46,7 +46,10 @@ const swaggerOptions = {
   apis: ['./routes/*.js']
 };
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+if (process.env.NODE_ENV !== 'production') {
+  // swagger ui is available only in development
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
