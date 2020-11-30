@@ -14,9 +14,9 @@ const answerSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  votes: {
-    type: Number,
-    default: 0
+  upvotersIds: {
+    type: [mongoose.Types.ObjectId],
+    default: []
   }
 });
 
