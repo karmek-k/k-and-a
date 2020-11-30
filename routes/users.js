@@ -10,19 +10,6 @@ const reportError = require('../functions/reportError');
 const validate = require('./middleware/validate');
 
 router.post('/create', userValidators, validate, async (req, res) => {
-  // Check if the username is unique
-  try {
-    const userExists = await User.exists({
-      username: req.body.username
-    });
-    if (userExists) {
-      return res.status(409).json({ msg: 'This username already exists' });
-    }
-  } catch (e) {
-    reportError(e);
-    return res.status(500).send();
-  }
-
   // Hash the password
   let hashedPass;
   try {
@@ -41,8 +28,7 @@ router.post('/create', userValidators, validate, async (req, res) => {
   try {
     await user.save();
   } catch (e) {
-    reportError(e);
-    return res.status(500).send();
+    return res.status(409).json({ msg: 'This username already exists' });
   }
 
   // Send response
