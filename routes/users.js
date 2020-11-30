@@ -9,6 +9,36 @@ const userLoginValidators = require('../validation/userLogin');
 const reportError = require('../functions/reportError');
 const validate = require('./middleware/validate');
 
+/**
+ * @swagger
+ *
+ * /api/users/create:
+ *   post:
+ *     summary: Creates a new user.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: user
+ *               password:
+ *                 type: string
+ *                 example: p4ssw0rd
+ *               email:
+ *                 type: string
+ *                 example: 'user@example.com'
+ *     responses:
+ *       '201':
+ *         description: Created
+ *       '409':
+ *         description: This username has been taken
+ *       '400':
+ *         description: Validation failed
+ */
 router.post('/create', userValidators, validate, async (req, res) => {
   // Hash the password
   let hashedPass;
