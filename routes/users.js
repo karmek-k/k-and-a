@@ -33,7 +33,8 @@ router.post('/create', userValidators, validate, async (req, res) => {
 
   // Send response
   return res.status(201).json({
-    username: user.username
+    username: user.username,
+    id: user._id
   });
 });
 
@@ -62,7 +63,8 @@ router.post('/login', userLoginValidators, validate, async (req, res) => {
 
   // everything is good, send the JWT
   const payload = {
-    username: user.username
+    username: user.username,
+    id: user._id
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
     expiresIn: '6h'

@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 const lengths = require('./lengths');
 
 module.exports = [
-  body('recipientUsername').exists(),
+  body('recipientId').isMongoId(),
   body('title').isLength(lengths.questionTitleLength),
   body('description').isLength(lengths.questionDescriptionLength)
 ];

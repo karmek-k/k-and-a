@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const QuestionSchema = new mongoose.Schema({
+const questionSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true
@@ -12,17 +12,13 @@ const QuestionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  posterUsername: {
-    type: String,
+  posterId: {
+    type: mongoose.Types.ObjectId,
     required: true
   },
-  recipientUsername: {
-    type: String,
+  recipientId: {
+    type: mongoose.Types.ObjectId,
     required: true
-  },
-  answered: {
-    type: Boolean,
-    default: false
   },
   tags: {
     type: [String],
@@ -30,4 +26,4 @@ const QuestionSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Question', QuestionSchema);
+module.exports = mongoose.model('Question', questionSchema);

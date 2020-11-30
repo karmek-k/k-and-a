@@ -9,6 +9,7 @@ const validate = require('./middleware/validate');
 
 const questionCreateValidators = require('../validation/questionCreate');
 const User = require('../models/User');
+const Answer = require('../models/Answer');
 
 router.get('/latest', async (req, res) => {
   try {
@@ -29,7 +30,10 @@ router.get('/:id', async (req, res) => {
   }
 
   if (question) {
-    return res.json(question);
+    let answer = null;
+    answer = await Answer.findOne({ questionId: question._id });
+
+    return res.json({ question, answer });
   }
 
   return res.status(404).json({ msg: 'Question not found' });
@@ -43,15 +47,15 @@ router.post(
   validate,
   async (req, res) => {
     const requestDto = {
-      posterUsername: req.user.username,
-      recipientUsername: req.body.recipientUsername,
+      posterId: req.user.id,
+      recipientId: req.body.recipientId,
       title: req.body.title,
       description: req.body.description,
       tags: req.body.tags
     };
 
     // Check if the user is asking themselves
-    if (requestDto.recipientUsername === req.user.username) {
+    if (requestDto.recipientId === req.user.id) {
       return res.status(400).json({
         msg: "You can't ask yourself"
       });
@@ -59,9 +63,7 @@ router.post(
 
     // Check if we're asking a non-existent user
     try {
-      const recipient = await User.findOne({
-        username: requestDto.recipientUsername
-      });
+      const recipient = await User.findById(requestDto.recipientId);
 
       if (!recipient) {
         return res.status(404).json({ msg: 'The recipient does not exist' });
