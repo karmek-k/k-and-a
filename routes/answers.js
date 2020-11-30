@@ -6,6 +6,7 @@ const validate = require('./middleware/validate');
 const answerCreateValidators = require('../validation/answerCreate');
 
 const Answer = require('../models/Answer');
+const Question = require('../models/Question');
 
 router.post(
   '/create',
@@ -20,6 +21,18 @@ router.post(
       content: req.body.content
     };
 
+    // Check if the user is answering themselves
+    const questionOpId = (await Question.findById(answerCreateDto.questionId))
+      .posterId;
+
+    if (req.user.id == questionOpId) {
+      // req.user.id: string, questionOpId: object
+      return res
+        .status(400)
+        .json({ msg: "You can't answer your own question" });
+    }
+
+    // Try to save the answer
     const answer = new Answer(answerCreateDto);
 
     try {
