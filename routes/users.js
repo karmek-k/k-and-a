@@ -62,7 +62,8 @@ router.post('/login', userLoginValidators, validate, async (req, res) => {
 
   // everything is good, send the JWT
   const payload = {
-    username: user.username
+    username: user.username,
+    id: user._id
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
     expiresIn: '6h'
