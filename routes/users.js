@@ -7,30 +7,9 @@ const User = require('../models/User');
 const userValidators = require('../validation/user');
 const userLoginValidators = require('../validation/userLogin');
 const reportError = require('../functions/reportError');
-const auth = require('./authMiddleware');
+const validate = require('./middleware/validate');
 
-router.post('/create', userValidators, async (req, res) => {
-  // Validate user data
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array()
-    });
-  }
-
-  // Check if the username is unique
-  try {
-    const userExists = await User.exists({
-      username: req.body.username
-    });
-    if (userExists) {
-      return res.status(409).json({ msg: 'This username already exists' });
-    }
-  } catch (e) {
-    reportError(e);
-    return res.status(500).send();
-  }
-
+router.post('/create', userValidators, validate, async (req, res) => {
   // Hash the password
   let hashedPass;
   try {
@@ -49,8 +28,7 @@ router.post('/create', userValidators, async (req, res) => {
   try {
     await user.save();
   } catch (e) {
-    reportError(e);
-    return res.status(500).send();
+    return res.status(409).json({ msg: 'This username already exists' });
   }
 
   // Send response
@@ -59,15 +37,7 @@ router.post('/create', userValidators, async (req, res) => {
   });
 });
 
-router.post('/login', userLoginValidators, async (req, res) => {
-  // Validate user data
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array()
-    });
-  }
-
+router.post('/login', userLoginValidators, validate, async (req, res) => {
   // Check if the user exists
   let user;
   try {
