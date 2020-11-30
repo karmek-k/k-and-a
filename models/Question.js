@@ -12,12 +12,12 @@ const questionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  posterUsername: {
-    type: String,
+  posterId: {
+    type: mongoose.Types.ObjectId,
     required: true
   },
-  recipientUsername: {
-    type: String,
+  recipientId: {
+    type: mongoose.Types.ObjectId,
     required: true
   },
   tags: {
