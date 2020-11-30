@@ -20,6 +20,21 @@ router.get('/latest', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  let question;
+  try {
+    question = await Question.findById(req.params.id);
+  } catch (e) {
+    return res.status(400).json({ msg: 'Invalid question id' });
+  }
+
+  if (question) {
+    return res.json(question);
+  }
+
+  return res.status(404).json({ msg: 'Question not found' });
+});
+
 router.post(
   '/create',
   auth,
