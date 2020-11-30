@@ -16,7 +16,7 @@ router.post(
   validate,
   async (req, res) => {
     const answerCreateDto = {
-      posterId: req.user._id,
+      posterId: req.user.id,
       questionId: req.body.questionId,
       content: req.body.content
     };
