@@ -68,6 +68,33 @@ router.post('/create', userValidators, validate, async (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ *
+ * /api/users/login:
+ *   post:
+ *     summary: Returns a JWT for the specified user.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: user
+ *               password:
+ *                 type: string
+ *                 example: p4ssw0rd
+ *     responses:
+ *       '200':
+ *         description: Token returned to the user
+ *       '404':
+ *         description: No such user found
+ *       '400':
+ *         description: Validation failed
+ */
 router.post('/login', userLoginValidators, validate, async (req, res) => {
   // Check if the user exists
   let user;
