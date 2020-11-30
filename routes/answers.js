@@ -25,7 +25,9 @@ router.post(
     try {
       await answer.save();
     } catch (e) {
-      console.error(e);
+      return res
+        .status(409)
+        .json({ msg: 'This question has already been answered' });
     }
 
     return res.status(201).json(answer);
