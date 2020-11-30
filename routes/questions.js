@@ -9,6 +9,7 @@ const validate = require('./middleware/validate');
 
 const questionCreateValidators = require('../validation/questionCreate');
 const User = require('../models/User');
+const Answer = require('../models/Answer');
 
 router.get('/latest', async (req, res) => {
   try {
@@ -29,7 +30,10 @@ router.get('/:id', async (req, res) => {
   }
 
   if (question) {
-    return res.json(question);
+    let answer = null;
+    answer = await Answer.findOne({ questionId: question._id });
+
+    return res.json({ question, answer });
   }
 
   return res.status(404).json({ msg: 'Question not found' });
