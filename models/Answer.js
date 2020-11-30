@@ -12,7 +12,7 @@ const answerSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: True
+    required: true
   },
   votes: {
     type: Number,
