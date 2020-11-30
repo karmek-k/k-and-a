@@ -20,10 +20,6 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  answered: {
-    type: Boolean,
-    default: false
-  },
   tags: {
     type: [String],
     default: []
