@@ -33,7 +33,8 @@ router.post('/create', userValidators, validate, async (req, res) => {
 
   // Send response
   return res.status(201).json({
-    username: user.username
+    username: user.username,
+    id: user._id
   });
 });
 
