@@ -6,6 +6,8 @@ const swaggerJsDoc = require('swagger-jsdoc');
 require('dotenv').config();
 
 const app = express();
+const port = process.env.PORT || 8000;
+const isSwaggerAvailable = process.env.NODE_ENV !== 'production';
 
 // Middleware
 app.use(express.json());
@@ -23,12 +25,14 @@ mongoose
   .catch(err => console.error(err));
 
 // Welcome route
-app.get('/', (req, res) => {
-  return res.json({
-    msg: 'Welcome to the K&A API. See the docs below to get started.',
-    docs: 'https://github.com/karmek-k/k-and-a'
+if (isSwaggerAvailable) {
+  app.get('/', (req, res) => {
+    return res.json({
+      msg: 'Welcome to the K&A API. See the docs below to get started.',
+      docs: `http://localhost:${port}/api-docs`
+    });
   });
-});
+}
 
 // Other routes
 app.use('/api/users', require('./routes/users'));
@@ -46,12 +50,11 @@ const swaggerOptions = {
   apis: ['./routes/*.js']
 };
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
-if (process.env.NODE_ENV !== 'production') {
+if (isSwaggerAvailable) {
   // swagger ui is available only in development
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
-const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`Listening at port ${port}`);
 });
