@@ -33,6 +33,29 @@ router.get('/latest', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ *
+ * /api/questions/{id}:
+ *   get:
+ *     summary: Returns details for a question and its answer (if exists).
+ *     tags:
+ *       - questions
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Question id
+ *     responses:
+ *       '400':
+ *         description: Invalid question id
+ *       '404':
+ *         description: Question not found
+ *       '200':
+ *         description: Question and answer returned
+ */
 router.get('/:id', async (req, res) => {
   let question;
   try {
