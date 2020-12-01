@@ -11,6 +11,18 @@ const questionCreateValidators = require('../validation/questionCreate');
 const User = require('../models/User');
 const Answer = require('../models/Answer');
 
+/**
+ * @swagger
+ *
+ * /api/questions/latest:
+ *   get:
+ *     summary: Fetches the most recent five questions.
+ *     tags:
+ *       - questions
+ *     responses:
+ *       '200':
+ *         description: Questions have been returned
+ */
 router.get('/latest', async (req, res) => {
   try {
     const questions = await Question.find().sort({ $natural: -1 }).limit(5);
@@ -21,6 +33,29 @@ router.get('/latest', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ *
+ * /api/questions/{id}:
+ *   get:
+ *     summary: Returns details for a question and its answer (if exists).
+ *     tags:
+ *       - questions
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Question id
+ *     responses:
+ *       '400':
+ *         description: Invalid question id
+ *       '404':
+ *         description: Question not found
+ *       '200':
+ *         description: Question and answer returned
+ */
 router.get('/:id', async (req, res) => {
   let question;
   try {
@@ -39,6 +74,45 @@ router.get('/:id', async (req, res) => {
   return res.status(404).json({ msg: 'Question not found' });
 });
 
+/**
+ * @swagger
+ *
+ * /api/questions/create:
+ *   post:
+ *     summary: Creates a new question.
+ *     tags:
+ *       - questions
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: test question
+ *               recipientId:
+ *                 type: string
+ *                 example: 5fc5229f32b2db1dbc3716f3
+ *               description:
+ *                 type: string
+ *                 required: false
+ *               tags:
+ *                 type: array
+ *                 example: ["intro", "hello"]
+ *     responses:
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: The poster has been banned
+ *       '400':
+ *         description: Validation failed / The user tried to ask themselves
+ *       '404':
+ *         description: The recipient does not exist
+ *       '201':
+ *         description: Question was created successfully
+ */
 router.post(
   '/create',
   auth,
