@@ -51,6 +51,46 @@ router.get('/:id', async (req, res) => {
   return res.status(404).json({ msg: 'Question not found' });
 });
 
+/**
+ * @swagger
+ *
+ * /api/questions/create:
+ *   post:
+ *     summary: Creates a new question.
+ *     tags:
+ *       - questions
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: test question
+ *               recipientId:
+ *                 type: string
+ *                 example: 5fc5229f32b2db1dbc3716f3
+ *               description:
+ *                 type: string
+ *                 required: false
+ *               tags:
+ *                 type: array
+ *                 example: ["intro", "hello"]
+ *
+ *     responses:
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: The poster has been banned
+ *       '400':
+ *         description: Validation failed / The user tried to ask themselves
+ *       '404':
+ *         description: The recipient does not exist
+ *       '201':
+ *         description: Question was created successfully
+ */
 router.post(
   '/create',
   auth,
