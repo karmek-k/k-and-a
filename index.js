@@ -6,6 +6,7 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
+const throttle = require('express-throttle');
 require('dotenv').config();
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(passport.initialize());
 app.use(morgan('short'));
 app.use(helmet());
 app.use(cors());
+app.use(throttle({ burst: 10, period: '1s' }));
 
 // Mongoose
 mongoose
