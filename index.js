@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
@@ -14,6 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 require('./config/passport');
 app.use(passport.initialize());
+app.use(morgan('short'));
+app.use(helmet());
+app.use(cors());
 
 // Mongoose
 mongoose
