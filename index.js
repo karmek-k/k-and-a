@@ -3,15 +3,25 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const cors = require('cors');
+const throttle = require('express-throttle');
 require('dotenv').config();
 
 const app = express();
+const port = process.env.PORT || 8000;
+const isSwaggerAvailable = process.env.NODE_ENV !== 'production';
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 require('./config/passport');
 app.use(passport.initialize());
+app.use(morgan('short'));
+app.use(helmet());
+app.use(cors());
+app.use(throttle({ burst: 10, period: '1s' }));
 
 // Mongoose
 mongoose
@@ -23,12 +33,14 @@ mongoose
   .catch(err => console.error(err));
 
 // Welcome route
-app.get('/', (req, res) => {
-  return res.json({
-    msg: 'Welcome to the K&A API. See the docs below to get started.',
-    docs: 'https://github.com/karmek-k/k-and-a'
+if (isSwaggerAvailable) {
+  app.get('/', (req, res) => {
+    return res.json({
+      msg: 'Welcome to the K&A API. See the docs below to get started.',
+      docs: `http://localhost:${port}/api-docs`
+    });
   });
-});
+}
 
 // Other routes
 app.use('/api/users', require('./routes/users'));
@@ -46,12 +58,11 @@ const swaggerOptions = {
   apis: ['./routes/*.js']
 };
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
-if (process.env.NODE_ENV !== 'production') {
+if (isSwaggerAvailable) {
   // swagger ui is available only in development
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
-const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`Listening at port ${port}`);
 });
