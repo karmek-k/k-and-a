@@ -11,6 +11,38 @@ const Question = require('../models/Question');
 
 const reportError = require('../functions/reportError');
 
+/**
+ * @swagger
+ *
+ * /api/answers/create:
+ *   post:
+ *     summary: Creates a new answer.
+ *     tags:
+ *       - answers
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               questionId:
+ *                 type: string
+ *                 example: 5fc522b832b2db1dbc3716f4
+ *               content:
+ *                 type: string
+ *     responses:
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: The poster has been banned
+ *       '400':
+ *         description: Validation failed / The user tried to answer themselves
+ *       '409':
+ *         description: The question has been already answered
+ *       '201':
+ *         description: Answer was created successfully
+ */
 router.post(
   '/create',
   auth,
@@ -50,6 +82,35 @@ router.post(
   }
 );
 
+/**
+ * @swagger
+ *
+ * /api/answers/upvote/{id}:
+ *   post:
+ *     summary: Upvotes an answer.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Answer id
+ *     tags:
+ *       - answers
+ *     responses:
+ *       '401':
+ *         description: Unauthorized
+ *       '403':
+ *         description: >
+ *           The user has been banned /
+ *           The user has already upvoted this question
+ *       '400':
+ *         description: Invalid question id / Trying to upvote your own answer
+ *       '404':
+ *         description: Question not found
+ *       '200':
+ *         description: Upvoted
+ */
 router.post('/upvote/:id', auth, disallowBanned, async (req, res) => {
   const upvoterId = req.user.id;
 
