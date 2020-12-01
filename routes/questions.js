@@ -11,6 +11,18 @@ const questionCreateValidators = require('../validation/questionCreate');
 const User = require('../models/User');
 const Answer = require('../models/Answer');
 
+/**
+ * @swagger
+ *
+ * /api/questions/latest:
+ *   get:
+ *     summary: Fetches the most recent five questions.
+ *     tags:
+ *       - questions
+ *     responses:
+ *       '200':
+ *         description: Questions have been returned
+ */
 router.get('/latest', async (req, res) => {
   try {
     const questions = await Question.find().sort({ $natural: -1 }).limit(5);
