@@ -45,7 +45,7 @@ router.get('/latest', async (req, res) => {
  *       - in: path
  *         name: id
  *         schema:
- *           type: integer
+ *           type: string
  *         required: true
  *         description: Question id
  *     responses:
@@ -101,7 +101,6 @@ router.get('/:id', async (req, res) => {
  *               tags:
  *                 type: array
  *                 example: ["intro", "hello"]
- *
  *     responses:
  *       '401':
  *         description: Unauthorized
