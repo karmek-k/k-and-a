@@ -15,6 +15,8 @@ const validate = require('./middleware/validate');
  * /api/users/create:
  *   post:
  *     summary: Creates a new user.
+ *     tags:
+ *       - users
  *     requestBody:
  *       required: true
  *       content:
@@ -74,6 +76,8 @@ router.post('/create', userValidators, validate, async (req, res) => {
  * /api/users/login:
  *   post:
  *     summary: Returns a JWT for the specified user.
+ *     tags:
+ *       - users
  *     requestBody:
  *       required: true
  *       content:
