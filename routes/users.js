@@ -130,7 +130,9 @@ router.post('/login', userLoginValidators, validate, async (req, res) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
     expiresIn: '6h'
   });
-  res.json({ token });
+
+  res.cookie('token', token, { httpOnly: true });
+  return res.json({ token });
 });
 
 module.exports = router;
