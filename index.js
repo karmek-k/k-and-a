@@ -7,6 +7,8 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
 const throttle = require('express-throttle');
+const cookieParser = require('cookie-parser');
+const csurf = require('csurf');
 require('dotenv').config();
 
 const app = express();
@@ -21,7 +23,9 @@ app.use(passport.initialize());
 app.use(morgan('short'));
 app.use(helmet());
 app.use(cors());
-app.use(throttle({ burst: 10, period: '1s' }));
+app.use(throttle({ burst: 5, period: '2s' }));
+app.use(cookieParser());
+app.use(csurf({ cookie: true }));
 
 // Mongoose
 mongoose
@@ -32,6 +36,10 @@ mongoose
   .then(() => console.log('Connected to the database'))
   .catch(err => console.error(err));
 
+//
+// ROUTES SECTION
+//
+
 // Welcome route
 if (isSwaggerAvailable) {
   app.get('/', (req, res) => {
@@ -41,6 +49,11 @@ if (isSwaggerAvailable) {
     });
   });
 }
+
+// CSRF token route
+app.get('/csrf-token', (req, res) => {
+  return res.json({ csrfToken: req.csrfToken() });
+});
 
 // Other routes
 app.use('/api/users', require('./routes/users'));
@@ -62,6 +75,10 @@ if (isSwaggerAvailable) {
   // swagger ui is available only in development
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
+
+//
+// END OF ROUTES SECTION
+//
 
 app.listen(port, () => {
   console.log(`Listening at port ${port}`);
