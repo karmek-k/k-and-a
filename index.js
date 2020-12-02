@@ -23,7 +23,7 @@ app.use(passport.initialize());
 app.use(morgan('short'));
 app.use(helmet());
 app.use(cors());
-app.use(throttle({ burst: 10, period: '1s' }));
+app.use(throttle({ burst: 5, period: '2s' }));
 app.use(cookieParser());
 app.use(csurf({ cookie: true }));
 
