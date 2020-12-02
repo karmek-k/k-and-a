@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
 const throttle = require('express-throttle');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(morgan('short'));
 app.use(helmet());
 app.use(cors());
 app.use(throttle({ burst: 10, period: '1s' }));
+app.use(cookieParser());
 
 // Mongoose
 mongoose
