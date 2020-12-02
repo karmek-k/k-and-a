@@ -36,6 +36,10 @@ mongoose
   .then(() => console.log('Connected to the database'))
   .catch(err => console.error(err));
 
+//
+// ROUTES SECTION
+//
+
 // Welcome route
 if (isSwaggerAvailable) {
   app.get('/', (req, res) => {
@@ -71,6 +75,10 @@ if (isSwaggerAvailable) {
   // swagger ui is available only in development
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
+
+//
+// END OF ROUTES SECTION
+//
 
 app.listen(port, () => {
   console.log(`Listening at port ${port}`);
