@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const throttle = require('express-throttle');
 const cookieParser = require('cookie-parser');
+const csurf = require('csurf');
 require('dotenv').config();
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(helmet());
 app.use(cors());
 app.use(throttle({ burst: 10, period: '1s' }));
 app.use(cookieParser());
+app.use(csurf({ cookie: true }));
 
 // Mongoose
 mongoose
@@ -43,6 +45,11 @@ if (isSwaggerAvailable) {
     });
   });
 }
+
+// CSRF token route
+app.get('/csrf-token', (req, res) => {
+  return res.json({ csrfToken: req.csrfToken() });
+});
 
 // Other routes
 app.use('/api/users', require('./routes/users'));
