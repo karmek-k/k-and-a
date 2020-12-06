@@ -16,16 +16,21 @@ const Answer = require('../models/Answer');
  *
  * /api/questions/latest:
  *   get:
- *     summary: Fetches the most recent five questions.
+ *     summary: Fetches the most recent five questions for the current user.
  *     tags:
  *       - questions
  *     responses:
  *       '200':
  *         description: Questions have been returned
  */
-router.get('/latest', async (req, res) => {
+router.get('/latest', auth, async (req, res) => {
   try {
-    const questions = await Question.find().sort({ $natural: -1 }).limit(5);
+    const questions = await Question.find({
+      recipientId: req.user.id
+    })
+      .sort({ $natural: -1 })
+      .limit(5);
+
     return res.json(questions);
   } catch (e) {
     reportError(e);
