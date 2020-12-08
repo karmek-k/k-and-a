@@ -4,9 +4,13 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const User = require('../models/User');
 
+const extractFromCookie = req => {
+  return req.cookies['token'];
+};
+
 const options = {
   secretOrKey: process.env.JWT_SECRET_KEY,
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+  jwtFromRequest: extractFromCookie
 };
 
 passport.use(

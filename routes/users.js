@@ -132,7 +132,7 @@ router.post('/login', userLoginValidators, validate, async (req, res) => {
   });
 
   res.cookie('token', token, { httpOnly: true });
-  return res.json({ token });
+  return res.json({ msg: 'Token returned in a cookie' });
 });
 
 module.exports = router;
